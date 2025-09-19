@@ -16,10 +16,6 @@ return {
     end,
   },
   {
-    'echansnovski/mini.nvim',
-    version = false,
-  },
-  {
     'tpope/vim-repeat',
   },
 }
