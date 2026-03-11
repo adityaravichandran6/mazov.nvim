@@ -15,7 +15,4 @@ return {
       require('alpha').setup(dashboard.opts)
     end,
   },
-  {
-    'tpope/vim-repeat',
-  },
 }
