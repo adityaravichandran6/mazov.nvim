@@ -1,7 +1,2 @@
-return {
-  'nvim-lualine/lualine.nvim',
-  requires = { 'nvim-tree/nvim-web-devicons', opt = true },
-  config = function()
-    require('lualine').setup()
-  end,
-}
+vim.pack.add { GH 'nvim-tree/nvim-web-devicons', GH 'nvim-lualine/lualine.nvim' }
+require('lualine').setup()

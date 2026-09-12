@@ -1,3 +1,1 @@
-return {
-  'tpope/vim-repeat',
-}
+vim.pack.add { GH 'tpope/vim-repeat' }

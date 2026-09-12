@@ -92,8 +92,8 @@ do
   -- Enable faster startup by caching compiled Lua modules
   vim.loader.enable()
 
--- GitHub copilot node.js path
-vim.g.copilot_node_command = '/home/ozymandias/.nvm/versions/node/v24.5.0/bin/node'
+  -- GitHub copilot node.js path
+  vim.g.copilot_node_command = '/home/ozymandias/.nvm/versions/node/v24.5.0/bin/node'
 
   -- Set <space> as the leader key
   -- See `:help mapleader`
@@ -102,7 +102,7 @@ vim.g.copilot_node_command = '/home/ozymandias/.nvm/versions/node/v24.5.0/bin/no
   vim.g.maplocalleader = ' '
 
   -- Set to true if you have a Nerd Font installed and selected in the terminal
-  vim.g.have_nerd_font = false
+  vim.g.have_nerd_font = true
 
   -- [[ Setting options ]]
   --  See `:help vim.o`
@@ -170,8 +170,8 @@ vim.g.copilot_node_command = '/home/ozymandias/.nvm/versions/node/v24.5.0/bin/no
   -- Minimal number of screen lines to keep above and below the cursor.
   vim.o.scrolloff = 10
 
--- set termguicolors to true for bufferline.nvim
-vim.o.termguicolors = true
+  -- set termguicolors to true for bufferline.nvim
+  vim.o.termguicolors = true
   -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
   -- instead raise a dialog asking if you wish to save the current file(s)
   -- See `:help 'confirm'`
@@ -186,11 +186,11 @@ do
   -- [[ Basic Keymaps ]]
   --  See `:help vim.keymap.set()`
 
--- Shortcut to open Lazy menu
-vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>')
+  -- Shortcut to open Lazy menu
+  vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>')
 
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+  -- Diagnostic keymaps
+  vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
   -- Clear highlights on search when pressing <Esc> in normal mode
   --  See `:help hlsearch`
   vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -204,7 +204,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
     underline = { severity = { min = vim.diagnostic.severity.WARN } },
 
     -- Can switch between these as you prefer
-    virtual_text = true, -- Text shows up at the end of the line
+    virtual_text = true,   -- Text shows up at the end of the line
     virtual_lines = false, -- Text shows up underneath the line, with virtual lines
 
     -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
@@ -315,7 +315,8 @@ do
       end
 
       if name == 'LuaSnip' then
-        if vim.fn.has 'win32' ~= 1 and vim.fn.executable 'make' == 1 then run_build(name, { 'make', 'install_jsregexp' }, ev.data.path) end
+        if vim.fn.has 'win32' ~= 1 and vim.fn.executable 'make' == 1 then run_build(name, { 'make', 'install_jsregexp' },
+            ev.data.path) end
         return
       end
 
@@ -331,9 +332,10 @@ end
 ---Because most plugins are hosted on GitHub, you can use the helper
 ---function to have less repetition in the following sections.
 ---@param repo string
----@return string
+---@return stringglobal 
 local function gh(repo) return 'https://github.com/' .. repo end
 
+function GH(repo) return 'https://github.com/' .. repo end
 -- ============================================================
 -- SECTION 4: UI / CORE UX PLUGINS
 -- guess-indent, gitsigns, which-key, colorscheme, todo-comments, mini modules
@@ -389,8 +391,10 @@ do
       end, { desc = 'Jump to previous git [c]hange', buf = bufnr })
 
       -- Visual mode actions
-      vim.keymap.set('v', '<leader>hs', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [s]tage hunk', buf = bufnr })
-      vim.keymap.set('v', '<leader>hr', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [r]eset hunk', buf = bufnr })
+      vim.keymap.set('v', '<leader>hs', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
+        { desc = 'git [s]tage hunk', buf = bufnr })
+      vim.keymap.set('v', '<leader>hr', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
+        { desc = 'git [r]eset hunk', buf = bufnr })
       -- Normal mode actions
       vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk', buf = bufnr })
       vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk', buf = bufnr })
@@ -398,14 +402,20 @@ do
       vim.keymap.set('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer', buf = bufnr })
       vim.keymap.set('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk', buf = bufnr })
       vim.keymap.set('n', '<leader>hi', gitsigns.preview_hunk_inline, { desc = 'git preview hunk [i]nline', buf = bufnr })
-      vim.keymap.set('n', '<leader>hb', function() gitsigns.blame_line { full = true } end, { desc = 'git [b]lame line', buf = bufnr })
+      vim.keymap.set('n', '<leader>hb', function() gitsigns.blame_line { full = true } end,
+        { desc = 'git [b]lame line', buf = bufnr })
       vim.keymap.set('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index', buf = bufnr })
-      vim.keymap.set('n', '<leader>hD', function() gitsigns.diffthis '~' end, { desc = 'git [D]iff against last commit', buf = bufnr })
-      vim.keymap.set('n', '<leader>hQ', function() gitsigns.setqflist 'all' end, { desc = 'git hunk [Q]uickfix list (all files in repo)', buf = bufnr })
-      vim.keymap.set('n', '<leader>hq', gitsigns.setqflist, { desc = 'git hunk [q]uickfix list (all changes in this file)', buf = bufnr })
+      vim.keymap.set('n', '<leader>hD', function() gitsigns.diffthis '~' end,
+        { desc = 'git [D]iff against last commit', buf = bufnr })
+      vim.keymap.set('n', '<leader>hQ', function() gitsigns.setqflist 'all' end,
+        { desc = 'git hunk [Q]uickfix list (all files in repo)', buf = bufnr })
+      vim.keymap.set('n', '<leader>hq', gitsigns.setqflist,
+        { desc = 'git hunk [q]uickfix list (all changes in this file)', buf = bufnr })
       -- Toggles
-      vim.keymap.set('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line', buf = bufnr })
-      vim.keymap.set('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = '[T]oggle git intra-line [w]ord diff', buf = bufnr })
+      vim.keymap.set('n', '<leader>tb', gitsigns.toggle_current_line_blame,
+        { desc = '[T]oggle git show [b]lame line', buf = bufnr })
+      vim.keymap.set('n', '<leader>tw', gitsigns.toggle_word_diff,
+        { desc = '[T]oggle git intra-line [w]ord diff', buf = bufnr })
       -- Text object
       vim.keymap.set({ 'o', 'x' }, 'ih', gitsigns.select_hunk, { desc = 'text object [i]nside [h]unk', buf = bufnr })
     end,
@@ -419,10 +429,10 @@ do
     icons = { mappings = vim.g.have_nerd_font },
     -- Document existing key chains
     spec = {
-      { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
+      { '<leader>s', group = '[S]earch',    mode = { 'n', 'v' } },
       { '<leader>t', group = '[T]oggle' },
-      { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
-      { 'gr', group = 'LSP Actions', mode = { 'n' } },
+      { '<leader>h', group = 'Git [H]unk',  mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
+      { 'gr',        group = 'LSP Actions', mode = { 'n' } },
     },
   }
 
@@ -631,7 +641,8 @@ do
   )
 
   -- Shortcut for searching your Neovim configuration files
-  vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config', follow = true } end, { desc = '[S]earch [N]eovim files' })
+  vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config', follow = true } end,
+    { desc = '[S]earch [N]eovim files' })
 end
 
 -- ============================================================
@@ -732,7 +743,9 @@ do
       --
       -- This may be unwanted, since they displace some of your code
       if client and client:supports_method('textDocument/inlayHint', event.buf) then
-        map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
+        map('<leader>th',
+          function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end,
+          '[T]oggle Inlay [H]ints')
       end
     end,
   })
@@ -858,7 +871,8 @@ do
     },
   }
 
-  vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
+  vim.keymap.set({ 'n', 'v' }, '<leader>F', function() require('conform').format { async = true } end,
+    { desc = '[F]ormat buffer' })
 end
 
 -- ============================================================
@@ -1025,8 +1039,8 @@ do
   --
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
-  require 'kickstart.plugins.lint',
-  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.lint'
+  require 'kickstart.plugins.autopairs'
   -- require 'kickstart.plugins.neo-tree',
   -- NOTE: You can add your own plugins, configuration, etc. in `lua/custom/plugins/*.lua`.
   --
@@ -1041,6 +1055,7 @@ do
   -- require 'custom.plugins.colorscheme'
   -- require 'custom.plugins.ui'
   -- require 'custom.plugins.git'
+
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
