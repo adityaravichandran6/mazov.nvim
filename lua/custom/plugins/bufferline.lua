@@ -1,2 +1,2 @@
 -- bufferline to display list of buffers
-return { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons', opts = {} }
+vim.pack.add { GH 'akinsho/bufferline.nvim', GH 'nvim-tree/nvim-web-devicons'}
